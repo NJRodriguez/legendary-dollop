@@ -1,7 +1,8 @@
-const db = require("../wrappers/dynamodb.js")
+const db = require('../wrappers/dynamodb.js')
 const glob = require('glob')
 let documents = {};
-const path = require("path");
+const path = require('path');
+const errors = require('../errors/documents.js')
 
 // Load every document!
 const filelist = glob.sync( './src/documents/*.js' );
@@ -22,7 +23,7 @@ class Document {
 
     validate(document) {
         if (!document.type) {
-            throw new Error("Missing document type!");
+            throw new errors.TypeError("Missing document type!");
         }
     }
 

@@ -1,4 +1,5 @@
-const AWS = require('aws-sdk')
+const AWS = require('aws-sdk');
+const errors = require('../errors/dynamodb.js');
 
 AWS.config.update({
 	region: process.env.AWS_DEFAULT_REGION,
@@ -25,6 +26,9 @@ class DatabaseClient {
             return rawDocument.Item;
         } catch (e) {
             console.error(e);
+            if (e.code == "ResourceNotFoundException") {
+                throw new errors.MissingTableError("The DynamoDB table you are trying to access has not been created.");
+            }
             throw e;
         }
     }
@@ -47,12 +51,26 @@ class DatabaseClient {
 			return await this._documentClient.put(params).promise();
 		} catch (e) {
             console.error(e);
+            if (e.code == "ResourceNotFoundException") {
+                throw new errors.MissingTableError("The DynamoDB table you are trying to access has not been created.");
+            }
+            if (e.code == "ConditionalCheckFailedException") {
+                throw new errors.ItemExistsError("The item you are trying to create already exists in the table.");
+            }
 			throw e;
 		}
     }
     
     update(params) {
-        return this._documentClient.update(params).promise();
+        try {
+            return this._documentClient.update(params).promise();
+        } catch (error) {
+            console.error(e);
+            if (e.code == "ResourceNotFoundException") {
+                throw new errors.MissingTableError("The DynamoDB table you are trying to access has not been created.");
+            }
+			throw e;
+        }
     }
     
 }
