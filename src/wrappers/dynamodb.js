@@ -22,12 +22,16 @@ class DatabaseClient {
             };
     
             const rawDocument = await this._documentClient.get(params).promise();
+
+            if (!rawDocument.Item) {
+                throw new errors.ItemNotFoundError(`The item with key (${key}) and value (${value}) has not been found.`)
+            }
     
             return rawDocument.Item;
         } catch (e) {
             console.error(e);
-            if (e.code == "ResourceNotFoundException") {
-                throw new errors.MissingTableError("The DynamoDB table you are trying to access has not been created.");
+            if (e.code == 'ResourceNotFoundException') {
+                throw new errors.MissingTableError('The DynamoDB table you are trying to access has not been created.');
             }
             throw e;
         }
@@ -55,7 +59,14 @@ class DatabaseClient {
                 throw new errors.MissingTableError("The DynamoDB table you are trying to access has not been created.");
             }
             if (e.code == "ConditionalCheckFailedException") {
-                throw new errors.ItemExistsError("The item you are trying to create already exists in the table.");
+                // throw new errors.ItemExistsError("The item you are trying to create already exists in the table.");
+                // ^ Personally, I'd create a new PATCH endpoint for updating, but this goes beyond the scope of the project. So if the item exists, we will replace it.
+                const params = {
+                    TableName: this._tableName,
+                    Item: document
+                };
+    
+                return await this._documentClient.put(params).promise();
             }
 			throw e;
 		}

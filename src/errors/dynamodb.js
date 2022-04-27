@@ -15,6 +15,14 @@ class MissingTableError extends DynamoDbError {
     }
 }
 
+class ItemNotFoundError extends InputError {
+    constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+         Error.captureStackTrace(this, this.constructor);
+    }
+}
+
 class ItemExistsError extends InputError {
     constructor(message) {
         super(message);
@@ -23,4 +31,4 @@ class ItemExistsError extends InputError {
     }
 }
 
-module.exports = {DynamoDbError, MissingTableError, ItemExistsError}
+module.exports = {DynamoDbError, MissingTableError, ItemExistsError, ItemNotFoundError}
