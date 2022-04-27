@@ -8,18 +8,25 @@ app.use(bodyParser.json());
 const port = 3000
 
 app.post('/shipment', async (req: any, res: any) => {
-  console.log("I posteded!");
-  const shipment = new documentClient.Document(req.body);
-  await shipment.create();
-  res.send({statusCode:200});
+  try {
+    const shipment = new documentClient.Document(req.body);
+    await shipment.create();
+    res.send({statusCode:200});
+  } catch (error) {
+    res.send({statusCode:500, message: error});
+  }
 })
 
 app.post('/organization', (req: any, res: any) => {
 })
 
 app.get('/shipments/:shipmentId', async (req: any, res: any) => {
-  const shipment = await documentClient.GetDocument(req.params.shipmentId, "SHIPMENT")
-  res.send({statusCode:200, result: shipment})
+  try {
+    const shipment = await documentClient.GetDocument(req.params.shipmentId, "SHIPMENT");
+    res.send({statusCode:200, result: shipment});
+  } catch (error) {
+    res.send({statusCode:500, message: error});
+  }
 })
 
 app.get('/organizations/:organizationId', (req: any, res: any) => {
