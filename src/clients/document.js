@@ -39,4 +39,9 @@ async function GetDocument(id, type) {
     return await temp_db.get("id", id.toLowerCase());
 }
 
-module.exports = {Document, GetDocument}
+async function GetDocumentsWithScan(type, filterExpression, expressionAttributeNames, expressionAttributeValues, projectionExpression) {
+    let temp_db = new db({tableName: documents[type.toUpperCase()].tableName})
+    return await temp_db.scan(filterExpression, expressionAttributeNames, expressionAttributeValues, projectionExpression);
+}
+
+module.exports = {Document, GetDocument, GetDocumentsWithScan}

@@ -37,6 +37,26 @@ class DatabaseClient {
         }
     }
 
+    async scan(filterExpression, expressionAttributeNames, expressionAttributeValues, projectionExpression) {
+        try {
+            const params = {
+                // Specify which items in the results are returned.
+                FilterExpression: filterExpression,
+                // Define the expression attribute value, which are substitutes for the values you want to compare.
+                ExpressionAttributeNames: expressionAttributeNames,
+                // Set the projection expression, which are the attributes that you want.
+                ProjectionExpression: projectionExpression,
+                TableName: this._tableName,
+              };
+
+            const result = await this._documentClient.scan(params).promise();
+
+            return result.Items;
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     async create(document) {
 		try {
 			validateDocument(document);
