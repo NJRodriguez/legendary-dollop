@@ -5,7 +5,7 @@ AWS.config.update({
 });
 
 class DatabaseClient {
-    constructor({ tableName, region }) {
+    constructor({ tableName, region = process.env.AWS_DEFAULT_REGION }) {
         this._tableName = tableName;
         const service = new AWS.DynamoDB({maxRetries: 6})
         this._documentClient = new AWS.DynamoDB.DocumentClient({service, region})
