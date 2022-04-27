@@ -72,18 +72,6 @@ class DatabaseClient {
 		}
     }
     
-    update(params) {
-        try {
-            return this._documentClient.update(params).promise();
-        } catch (error) {
-            console.error(e);
-            if (e.code == "ResourceNotFoundException") {
-                throw new errors.MissingTableError("The DynamoDB table you are trying to access has not been created.");
-            }
-			throw e;
-        }
-    }
-    
 }
 
 function validateDocument(document) {

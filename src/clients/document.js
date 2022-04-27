@@ -32,16 +32,6 @@ class Document {
         this._document.validate();
         await this._db.create(this._document);
     }
-
-    async update() {
-        // Validate and update document
-        this._document.validate();
-        await this._db.update(this._document);
-    }
-
-    async delete() {
-        // Delete document by id
-    }
 }
 
 async function GetDocument(id, type) {
