@@ -9,7 +9,7 @@ class Shipment {
         this.organizations = organizations;
         this.transportPacks = transportPacks;
         this.estimatedTimeArrival = estimatedTimeArrival;
-        this.type = type;
+        this.type = type.toUpperCase();
         this.validate();
     }
 

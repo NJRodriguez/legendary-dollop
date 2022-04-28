@@ -8,7 +8,7 @@ class Organization {
     constructor({id ,code, type}) {
         this.id = id;
         this.code = code;
-        this.type = type;
+        this.type = type.toUpperCase();
         this.validate();
     }
 
