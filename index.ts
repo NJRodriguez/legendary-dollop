@@ -67,10 +67,8 @@ app.get('/shipments/aggregate/:unit', async (req: any, res: any) => { // This sh
       });
       const result = totalWeights.reduce((pv:any, cv:any) => {
         if (cv.unit !== req.params.unit) {
-          console.log(pv);
           return convert.convertUnit(parseInt(cv.weight,10), cv.unit, req.params.unit) + pv;
         } else {
-          console.log(pv);
           return parseInt(cv.weight,10) + pv;
         }
       }, 0)
