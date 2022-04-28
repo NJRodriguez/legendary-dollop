@@ -45,4 +45,12 @@ class InvalidTimeError extends InputError {
     }
 }
 
-module.exports = {InputError, TypeError, IdError, CodeError, MissingNodesError, InvalidTimeError}
+class InvalidTypeError extends InputError {
+    constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+        Error.captureStackTrace(this, this.constructor);
+    }
+}
+
+module.exports = {InputError, TypeError, IdError, CodeError, MissingNodesError, InvalidTimeError, InvalidTypeError}
