@@ -18,12 +18,12 @@ class Document {
     constructor(document) {
         this.validate(document);
         this._document = new documents[document.type.toUpperCase()].Model(document);
-        this._db = new db({tableName: documents[document.type].tableName})
+        this._db = new db({tableName: documents[document.type.toUpperCase()].tableName})
     }
 
     validate(document) {
         if (!document.type) { throw new errors.TypeError("Missing document type!") };
-        if (!documents[document.type]) {
+        if (!documents[document.type.toUpperCase()]) {
             const TYPES = [];
             Object.values(documents).forEach(doc => TYPES.push(doc.TYPE));
             throw new errors.InvalidTypeError(`The type (${document.type}) should be one of ${TYPES}.`) 
